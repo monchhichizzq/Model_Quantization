@@ -52,6 +52,42 @@ It typically involves:
     Caveats: in some cases accuracy is lower, particularly for <8bit
 
 
+Quantization specification
+
+- float32 --> int8
+
+- scale factor:\
+    scale = (max - min)/ 2^{bits}
+
+- zero-point:\
+ An integer value that corresponds to floating point zero
+
+- Quantized_value = float_value/scale + zero_point
+- float_value = (quantized_value - zero_point)*scale
+
+Symmetric:
+- Per-axis symmetric weights represented by int8 two's complement values in the range [-127, 127]
+  
+- Per-layer asymmetric activations represented by int8 two's complement values in the range [-128, 127]
+  
+- Zero-point in range [-128, 127]
+
+- Dequantize: real_value = (int8_value - zero_point)*scale
+
+Weight is better to be quantized symmetric/ Activation is better to be quantized asymmetric
+
+
+
+Per layer / Per axis
+
+For each Conv/Depthwise channel, weights have different distributions. 
+
+- Each (weight) tensor axis is quantized separately 
+- Gets most bang for the buck for CNN accuracy
+
+
+
+
 
 
 
